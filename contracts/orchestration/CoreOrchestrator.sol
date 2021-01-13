@@ -94,7 +94,7 @@ interface IGovernanceOrchestrator {
 // solhint-disable-next-line max-states-count
 contract CoreOrchestrator is Ownable {
 	address public admin;
-	bool private constant TEST_MODE = true;
+	bool private constant TEST_MODE = false;
 
 	// ----------- Uniswap Addresses -----------
 	address public constant ETH_USDC_UNI_PAIR = address(0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc);
@@ -184,12 +184,6 @@ contract CoreOrchestrator is Ownable {
 		core = new Core();
 		tribe = address(core.tribe());
 		fei = address(core.fei());
-
-		uniswapOracle = address(new UniswapOracle(address(core), 
-			ETH_USDC_UNI_PAIR, 
-			UNI_ORACLE_TWAP_DURATION, 
-			USDC_PER_ETH_IS_PRICE_0
-		));
 
 		core.grantRevoker(_admin);
 		bcOrchestrator = IBondingCurveOrchestrator(_bcOrchestrator);
