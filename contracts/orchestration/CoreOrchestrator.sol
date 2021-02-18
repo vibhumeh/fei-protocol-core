@@ -22,6 +22,10 @@ contract CoreOrchestrator is Ownable {
     // ----------- Uniswap Addresses -----------
     address public constant ETH_USDC_UNI_PAIR =
         address(0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc);
+<<<<<<< HEAD
+=======
+
+>>>>>>> a734377 (integration testing setup)
     address public constant ROUTER =
         address(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
 
@@ -34,25 +38,25 @@ contract CoreOrchestrator is Ownable {
     address public tribeFeiPair;
 
     // ----------- Time periods -----------
-    uint256 public constant TOKEN_TIMELOCK_RELEASE_WINDOW = 4 * 365 days;
+    uint256 public constant TOKEN_TIMELOCK_RELEASE_WINDOW = 10 minutes;
 
-    uint256 public constant DAO_TIMELOCK_DELAY = 1 days;
-    uint256 public constant GENESIS_DURATION = 3 days;
+    uint256 public constant DAO_TIMELOCK_DELAY = 10;
+    uint256 public constant GENESIS_DURATION = 20;
 
-    uint256 public constant STAKING_REWARDS_DURATION = 2 * 365 days;
+    uint256 public constant STAKING_REWARDS_DURATION = 6 minutes;
     
-    uint256 public constant STAKING_REWARDS_DRIP_FREQUENCY = 1 weeks;
+    uint256 public constant STAKING_REWARDS_DRIP_FREQUENCY = 2 minutes;
 
-    uint256 public constant THAWING_DURATION = 2 weeks;
+    uint256 public constant THAWING_DURATION = 10 minutes;
 
-    uint256 public constant UNI_ORACLE_TWAP_DURATION = 10 minutes; // 10 min twap
+    uint256 public constant UNI_ORACLE_TWAP_DURATION = 1;
 
-    uint256 public constant BONDING_CURVE_ALLOCATE_INCENTIVE_FREQUENCY = 1 days; // 1 day duration
+    uint256 public constant BONDING_CURVE_ALLOCATE_INCENTIVE_FREQUENCY = 10 minutes;
 
     // ----------- Params -----------
     uint256 public constant GENESIS_FEI_TRIBE_EXCHANGE_RATE_DISCOUNT = 10;
 
-    uint32 public constant INCENTIVE_GROWTH_RATE = 75; // a bit over 1 unit per 5 hours assuming 13s block time
+    uint32 public constant INCENTIVE_GROWTH_RATE = 50000; // a bit over 1 unit per 5 hours assuming 13s block time
 
     uint256 public constant SCALE = 100_000_000e18;
     uint256 public constant FEI_KEEPER_INCENTIVE = 500e18;
@@ -149,6 +153,7 @@ contract CoreOrchestrator is Ownable {
         stakingOrchestrator = IStakingOrchestrator(_stakingOrchestrator);
 
         admin = _admin;
+        core.grantGovernor(_admin);
     }
 
     function initCore(address _core) public onlyOwner {
