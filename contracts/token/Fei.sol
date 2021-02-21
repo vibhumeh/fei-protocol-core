@@ -49,7 +49,7 @@ contract Fei is IFei, ERC20Burnable, CoreRef {
         override
         onlyGovernor
     {
-        require(Address.isContract(account) || account == address(0), "Fei: incentivized is not a contract or zero");
+        require(Address.isContract(account), "Fei: incentivized is not a contract");
         incentiveContract[account] = incentive;
         emit IncentiveContractUpdate(account, incentive);
     }
@@ -129,17 +129,6 @@ contract Fei is IFei, ERC20Burnable, CoreRef {
             operatorIncentive != address(0)
         ) {
             IIncentive(operatorIncentive).incentivize(
-                sender,
-                recipient,
-                msg.sender,
-                amount
-            );
-        }
-
-        // all incentive, if active applies to every transfer
-        address allIncentive = incentiveContract[address(0)];
-        if (allIncentive != address(0)) {
-            IIncentive(allIncentive).incentivize(
                 sender,
                 recipient,
                 msg.sender,

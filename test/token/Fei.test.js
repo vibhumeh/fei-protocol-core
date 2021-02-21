@@ -134,26 +134,7 @@ describe('Fei', function () {
           expect(await this.fei.balanceOf(userAddress)).to.be.bignumber.equal(new BN(100));
         });
       });
-      describe('on all', function () {
-        beforeEach(async function () {
-          await this.fei.mint(userAddress, 200, { from: minterAddress });
-          // Set all incentive
-          await this.fei.setIncentiveContract(ZERO_ADDRESS, this.incentive.address, {from: governorAddress});
-          // unset incentive
-          await this.fei.setIncentiveContract(this.incentivizedAddress, ZERO_ADDRESS, {from: governorAddress});
 
-          const { logs } = await this.fei.transfer(this.incentivizedAddress, 200, { from: userAddress });
-          this.logs = logs;
-        });
-
-        it('balances update', async function () {
-          expect(await this.fei.balanceOf(this.incentivizedAddress)).to.be.bignumber.equal(new BN(200));
-        });
-
-        it('incentive applied', async function () {
-          expect(await this.fei.balanceOf(userAddress)).to.be.bignumber.equal(new BN(100));
-        });
-      });
       describe('on sender and receiver', function () {
 
         beforeEach(async function () {
@@ -164,24 +145,6 @@ describe('Fei', function () {
 
         it('balances update with incentives', async function () {
           expect(await this.fei.balanceOf(this.incentivizedAddress)).to.be.bignumber.equal(new BN(400)); // infinite FEI ;)
-        });
-      });
-      describe('on receiver and all', function () {
-        beforeEach(async function () {
-          await this.fei.mint(userAddress, 200, { from: minterAddress });
-          // Set incentive on zero address
-          await this.fei.setIncentiveContract(ZERO_ADDRESS, this.incentive.address, {from: governorAddress});
-
-          const { logs } = await this.fei.transfer(this.incentivizedAddress, 200, { from: userAddress });
-          this.logs = logs;
-        });
-
-        it('balances update', async function () {
-          expect(await this.fei.balanceOf(this.incentivizedAddress)).to.be.bignumber.equal(new BN(200));
-        });
-
-        it('incentive applied', async function () {
-          expect(await this.fei.balanceOf(userAddress)).to.be.bignumber.equal(new BN(200));
         });
       });
     });
@@ -235,34 +198,6 @@ describe('Fei', function () {
 
         it('incentive applied', async function () {
           expect(await this.fei.balanceOf(this.incentivizedAddress)).to.be.bignumber.equal(new BN(200));
-        });
-      });
-
-      describe('on operator and all', function () {
-        beforeEach(async function () {
-          await this.fei.mint(userAddress, 200, { from: minterAddress });
-          await this.fei.approve(this.operatorAddress, 200, { from: userAddress });
-          // Set incentive on operator
-          await this.fei.setIncentiveContract(this.operatorAddress, this.incentive.address, {from: governorAddress});
-          // Unset incentive on this.incentivizedAddress
-          await this.fei.setIncentiveContract(this.incentivizedAddress, ZERO_ADDRESS, {from: governorAddress});
-          // Set incentive on all 
-          await this.fei.setIncentiveContract(ZERO_ADDRESS, this.incentive.address, {from: governorAddress});
-
-          const { logs } = await this.operator.sendFeiFrom(userAddress, this.incentivizedAddress, 200);
-          this.logs = logs;
-        });
-
-        it('balances update', async function () {
-          expect(await this.fei.balanceOf(this.incentivizedAddress)).to.be.bignumber.equal(new BN(200));
-        });
-
-        it('incentive applied', async function () {
-          expect(await this.fei.balanceOf(userAddress)).to.be.bignumber.equal(new BN(200));
-        });
-
-        it('operator approval decrements', async function () {
-          expect(await this.fei.allowance(userAddress, this.operatorAddress)).to.be.bignumber.equal(new BN(0));
         });
       });
     });
