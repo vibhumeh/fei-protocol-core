@@ -10,67 +10,67 @@ const RouterOrchestrator = artifacts.require("RouterOrchestrator");
 const StakingOrchestrator = artifacts.require("StakingOrchestrator");
 
 module.exports = function(deployer, network, accounts) {
-  	var pcvOrchestrator, bondingCurveOrchestrator, incentiveOrchestrator, controllerOrchestrator, idoOrchestrator, genesisOrchestrator, governorOrchestrator, coreOrchestrator, routerOrchestrator, stakingOrchestrator;
+  	var pcvo, bc, incentive, controller, ido, genesis, gov, core, routerOrchestrator, stakingOrchestrator;
 
 	deployer.then(function() {
 	  	return ControllerOrchestrator.deployed();
 	}).then(function(instance) {
-		controllerOrchestrator = instance;
+		controller = instance;
 	  	return BondingCurveOrchestrator.deployed();
 	}).then(function(instance) {
-	  	bondingCurveOrchestrator = instance;
+	  	bc = instance;
 	  	return GenesisOrchestrator.deployed();
 	}).then(function(instance) {
-		genesisOrchestrator = instance
+		genesis = instance
 	  	return GovernanceOrchestrator.deployed();
 	}).then(function(instance) {
-	  	governorOrchestrator = instance;
+	  	gov = instance;
 	  	return IDOOrchestrator.deployed();
 	}).then(function(instance) {
-		idoOrchestrator = instance;
-	 	return IncentiveOrchestrator.deployed();
+		ido = instance;
+	 	return deployer.deploy(IncentiveOrchestrator);
 	}).then(function(instance) {
-		incentiveOrchestrator = instance;
+		incentive = instance;
 	 	return RouterOrchestrator.deployed();
 	}).then(function(instance) {
 		routerOrchestrator = instance;
 	 	return PCVDepositOrchestrator.deployed();
 	}).then(function(instance) {
-		pcvOrchestrator = instance;
+		pcvo = instance;
 	 	return StakingOrchestrator.deployed();
 	}).then(function(instance) {
 		stakingOrchestrator = instance;
 	 	return deployer.deploy(CoreOrchestrator,
-	 		pcvOrchestrator.address, 
-	 		bondingCurveOrchestrator.address, 
-	 		incentiveOrchestrator.address, 
-	 		controllerOrchestrator.address, 
-	 		idoOrchestrator.address, 
-	 		genesisOrchestrator.address, 
-	 		governorOrchestrator.address,
+	 		pcvo.address, 
+	 		bc.address, 
+	 		incentive.address, 
+	 		controller.address, 
+	 		ido.address, 
+	 		genesis.address, 
+	 		gov.address,
 			routerOrchestrator.address,
 			stakingOrchestrator.address, 
 	 		accounts[0],
 	 		{gas: 8000000}
 	 	);
 	}).then(function(instance) {
-		coreOrchestrator = instance;
-	 	return bondingCurveOrchestrator.transferOwnership(coreOrchestrator.address);
+		core = instance;
+	 	return bc.transferOwnership(core.address);
 	}).then(function(instance) {
-	 	return incentiveOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return incentive.transferOwnership(core.address);
 	}).then(function(instance) {
-	 	return idoOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return ido.transferOwnership(core.address);
 	}).then(function(instance) {
-	 	return genesisOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return genesis.transferOwnership(core.address);
 	}).then(function(instance) {
-	 	return governorOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return gov.transferOwnership(core.address);
 	}).then(function(instance) {
-	 	return controllerOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return controller.transferOwnership(core.address);
 	}).then(function(instance) {
-	 	return pcvOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return pcvo.transferOwnership(core.address);
 	}).then(function(instance) {
-	 	return routerOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return routerOrchestrator.transferOwnership(core.address);
 	}).then(function(instance) {
-		return stakingOrchestrator.transferOwnership(coreOrchestrator.address);
+		return stakingOrchestrator.transferOwnership(core.address);
    });
 }
