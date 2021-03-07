@@ -227,7 +227,7 @@ contract CoreOrchestrator is Ownable {
     }
 
     function initIDO() public onlyOwner {
-        (ido, timelockedDelegator) = idoOrchestrator.init(
+        (ido, timelockedDelegator,,,,,,,,) = idoOrchestrator.init(
             address(core),
             admin,
             tribe,

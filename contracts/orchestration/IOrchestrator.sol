@@ -64,7 +64,18 @@ interface IIDOOrchestrator is IOrchestrator {
         address pair,
         address router,
         uint256 releaseWindowDuration
-    ) external returns (address ido, address timelockedDelegator);
+    ) external returns (
+        address ido, 
+        address timelockedDelegatorA,
+        address timelockedDelegatorB,
+        address timelockedDelegatorC,
+        address timelockedDelegatorD,
+        address timelockedDelegatorE,
+        address timelockedDelegatorF,
+        address timelockedDelegatorG,
+        address timelockedDelegatorH,
+        address timelockedDelegatorI
+    );
 }
 
 interface IGenesisOrchestrator is IOrchestrator {
