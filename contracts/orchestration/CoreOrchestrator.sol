@@ -61,11 +61,22 @@ contract CoreOrchestrator is Ownable {
 
     bool public constant USDC_PER_ETH_IS_PRICE_0 = false; // for the ETH_USDC pair
 
+    // ----------- TRIBE -----------
     uint256 public tribeSupply;
     uint256 public constant IDO_TRIBE_PERCENTAGE = 20;
     uint256 public constant GENESIS_TRIBE_PERCENTAGE = 10;
     uint256 public constant DEV_TRIBE_PERCENTAGE = 20;
     uint256 public constant STAKING_TRIBE_PERCENTAGE = 10;
+    uint256 public constant TRIBE_GRANTS_AMT = 20000000;
+    uint256 public constant TRIBE_TIMELOCK_AMT_A = 160000000;
+    uint256 public constant TRIBE_TIMELOCK_AMT_B = 5000000;
+    uint256 public constant TRIBE_TIMELOCK_AMT_C = 5000000;
+    uint256 public constant TRIBE_TIMELOCK_AMT_D = 5000000;
+    uint256 public constant TRIBE_TIMELOCK_AMT_E = 5000000;
+    uint256 public constant TRIBE_TIMELOCK_AMT_F = 0;
+    uint256 public constant TRIBE_TIMELOCK_AMT_G = 0;
+    uint256 public constant TRIBE_TIMELOCK_AMT_H = 0;
+    uint256 public constant TRIBE_TIMELOCK_AMT_I = 0;
 
     // ----------- Orchestrators -----------
     IPCVDepositOrchestrator private pcvDepositOrchestrator;
