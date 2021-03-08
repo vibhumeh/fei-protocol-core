@@ -10,44 +10,56 @@ import "./IOrchestrator.sol";
 contract IDOOrchestrator is IIDOOrchestrator, Ownable {
     using Clones for address;
 
+    address public timelockedDelegator;
+    address[] public timelockedDelegators;
+
     function init(
         address core,
         address admin,
         address tribe,
         address pair,
         address router,
-        uint256 releaseWindowDuration
+        uint256 releaseWindowDuration    
     )
         public
         override
         onlyOwner
         returns (
             address ido, 
-            address timelockedDelegatorA,
-            address timelockedDelegatorB,
-            address timelockedDelegatorC,
-            address timelockedDelegatorD,
-            address timelockedDelegatorE,
-            address timelockedDelegatorF,
-            address timelockedDelegatorG,
-            address timelockedDelegatorH,
-            address timelockedDelegatorI
+            address timelockedDelegator
         )
     {
         ido = address(
             new IDO(core, admin, releaseWindowDuration, pair, router)
         );
-        timelockedDelegatorA = address(
+
+        timelockedDelegator = address(
             new TimelockedDelegator(tribe, admin, releaseWindowDuration)
         );
-        timelockedDelegatorB = timelockedDelegatorA.clone();
-        timelockedDelegatorC = timelockedDelegatorA.clone();
-        timelockedDelegatorD = timelockedDelegatorA.clone();
-        timelockedDelegatorE = timelockedDelegatorA.clone();
-        timelockedDelegatorF = timelockedDelegatorA.clone();
-        timelockedDelegatorG = timelockedDelegatorA.clone();
-        timelockedDelegatorH = timelockedDelegatorA.clone();
-        timelockedDelegatorI = timelockedDelegatorA.clone();
+    }
+
+    function initTimelocks(
+        address timelockedDelegator,
+        address admin,
+        address tribe,
+        uint256 releaseWindowDuration,
+        uint256 numberOfTimelocks
+    )
+        public
+        override
+        onlyOwner
+        returns (
+            address[] memory timelockedDelegators
+        )
+    {
+        timelockedDelegators = new address[](numberOfTimelocks);
+        timelockedDelegators[0] = timelockedDelegator;
+
+        for(uint i = 1; i < numberOfTimelocks; i++) { // skip the first
+            address timelockedDelegatorClone = timelockedDelegator.clone();
+            TimelockedDelegator(timelockedDelegatorClone).initTimelockedDelegator(tribe, admin, releaseWindowDuration);
+            timelockedDelegators[i] = timelockedDelegatorClone;
+        }
     }
 
     function detonate() public override onlyOwner {

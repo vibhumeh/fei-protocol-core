@@ -1,7 +1,15 @@
 pragma solidity ^0.6.6;
 
+import "../core/ICore.sol";
+
 interface IOrchestrator {
     function detonate() external;
+}
+
+interface ICoreOrchestrator is IOrchestrator {
+    function init(
+        address admin
+    ) external returns (ICore core, address tribe, address fei, uint256 tribeSupply);
 }
 
 interface IPCVDepositOrchestrator is IOrchestrator {
@@ -63,18 +71,20 @@ interface IIDOOrchestrator is IOrchestrator {
         address tribe,
         address pair,
         address router,
-        uint256 releaseWindowDuration
+        uint256 releaseWindowDuration    
     ) external returns (
         address ido, 
-        address timelockedDelegatorA,
-        address timelockedDelegatorB,
-        address timelockedDelegatorC,
-        address timelockedDelegatorD,
-        address timelockedDelegatorE,
-        address timelockedDelegatorF,
-        address timelockedDelegatorG,
-        address timelockedDelegatorH,
-        address timelockedDelegatorI
+        address timelockedDelegator
+    );
+
+    function initTimelocks(
+        address timelockedDelegator,
+        address admin,
+        address tribe,
+        uint256 releaseWindowDuration,
+        uint256 numberOfTimelocks
+    ) external returns (
+        address[] memory timelockedDelegators
     );
 }
 

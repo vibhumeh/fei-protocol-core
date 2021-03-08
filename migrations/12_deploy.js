@@ -1,30 +1,30 @@
-const CoreOrchestrator = artifacts.require("CoreOrchestrator");
+const Orchestrator = artifacts.require("Orchestrator");
 
 module.exports = function(deployer) {
 	deployer.then(function() {
-	 	return CoreOrchestrator.deployed();
+	 	return Orchestrator.deployed();
 	}).then(function(instance) {
-		coreOrchestrator = instance;
-	 	return coreOrchestrator.initCore();
+		orchestrator = instance;
+	 	return orchestrator.initCore();
 	}).then(function() {
-	 	return coreOrchestrator.initPairs();
+	 	return orchestrator.initPairs();
 	}).then(function() {
-	 	return coreOrchestrator.initPCVDeposit();
+	 	return orchestrator.initPCVDeposit();
 	}).then(function() {
-	 	return coreOrchestrator.initBondingCurve();
+	 	return orchestrator.initBondingCurve();
 	}).then(function() {
-	 	return coreOrchestrator.initIncentive();
+	 	return orchestrator.initIncentive();
 	}).then(function() {
-	 	return coreOrchestrator.initController();
+	 	return orchestrator.initController();
 	}).then(function() {
-		 return coreOrchestrator.initIDO();
+		 return orchestrator.initIDO();
 	}).then(function() {
-	 	return coreOrchestrator.initGovernance();
+	 	return orchestrator.initGovernance();
 	}).then(function() {
-	 	return coreOrchestrator.initRouter();
+	 	return orchestrator.initRouter();
 	}).then(function() {
-		return coreOrchestrator.initGenesis();
+		return orchestrator.initGenesis();
 	}).then(function() {
-		return coreOrchestrator.initStaking();
+		return orchestrator.initStaking();
     });
 }

@@ -2,6 +2,7 @@ pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/proxy/Initializable.sol";
 import "./ITimelockedDelegator.sol";
 import "../utils/LinearTokenTimelock.sol";
 
@@ -30,7 +31,7 @@ contract Delegatee is Ownable {
 /// @title a timelock for TRIBE allowing for sub-delegation
 /// @author Fei Protocol
 /// @notice allows the timelocked TRIBE to be delegated by the beneficiary while locked
-contract TimelockedDelegator is ITimelockedDelegator, LinearTokenTimelock {
+contract TimelockedDelegator is ITimelockedDelegator, LinearTokenTimelock, Initializable {
     /// @notice associated delegate proxy contract for a delegatee
     mapping(address => address) public override delegateContract;
 
@@ -44,15 +45,24 @@ contract TimelockedDelegator is ITimelockedDelegator, LinearTokenTimelock {
     /// @notice the total delegated amount of TRIBE
     uint256 public override totalDelegated;
 
-    /// @notice Delegatee constructor
-    /// @param _tribe the TRIBE token address
-    /// @param _beneficiary default delegate, admin, and timelock beneficiary
-    /// @param _duration duration of the token timelock window
     constructor(
         address _tribe,
         address _beneficiary,
         uint256 _duration
     ) public LinearTokenTimelock(_beneficiary, _duration, _tribe) {
+        initTimelockedDelegator(_tribe, _beneficiary, _duration);
+    }
+
+    /// @notice TimelockedDelegator initializer
+    /// @param _tribe the TRIBE token address
+    /// @param _beneficiary default delegate, admin, and timelock beneficiary
+    /// @param _duration duration of the token timelock window
+    function initTimelockedDelegator(        
+        address _tribe,
+        address _beneficiary,
+        uint256 _duration
+    ) public initializer {
+        _initLinearTokenTimelock(_beneficiary, _duration, _tribe);
         tribe = ITribe(_tribe);
         tribe.delegate(_beneficiary);
     }

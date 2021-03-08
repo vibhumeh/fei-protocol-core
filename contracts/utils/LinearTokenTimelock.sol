@@ -29,16 +29,7 @@ contract LinearTokenTimelock is ILinearTokenTimelock, Timed {
         uint256 _duration,
         address _lockedToken
     ) public Timed(_duration) {
-        require(_duration != 0, "LinearTokenTimelock: duration is 0");
-        require(
-            _beneficiary != address(0),
-            "LinearTokenTimelock: Beneficiary must not be 0 address"
-        );
-
-        beneficiary = _beneficiary;
-        _initTimed();
-
-        _setLockedToken(_lockedToken);
+        _initLinearTokenTimelock(_beneficiary, _duration, _lockedToken);
     }
 
     // Prevents incoming LP tokens from messing up calculations
@@ -57,6 +48,26 @@ contract LinearTokenTimelock is ILinearTokenTimelock, Timed {
             "LinearTokenTimelock: Caller is not a beneficiary"
         );
         _;
+    }
+
+    function _initLinearTokenTimelock(
+        address _beneficiary, 
+        uint256 _duration, 
+        address _lockedToken
+    ) internal virtual {
+        require(_duration != 0, "LinearTokenTimelock: duration is 0");
+
+        _setDuration(_duration);
+
+        require(
+            _beneficiary != address(0),
+            "LinearTokenTimelock: Beneficiary must not be 0 address"
+        );
+
+        beneficiary = _beneficiary;
+        _initTimed();
+
+        _setLockedToken(_lockedToken);
     }
 
     /// @notice releases unlocked tokens to beneficiary

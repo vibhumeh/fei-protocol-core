@@ -1,3 +1,4 @@
+const Orchestrator = artifacts.require("Orchestrator");
 const CoreOrchestrator = artifacts.require("CoreOrchestrator");
 const BondingCurveOrchestrator = artifacts.require("BondingCurveOrchestrator");
 const IncentiveOrchestrator = artifacts.require("IncentiveOrchestrator");
@@ -40,7 +41,10 @@ module.exports = function(deployer, network, accounts) {
 	 	return StakingOrchestrator.deployed();
 	}).then(function(instance) {
 		stakingOrchestrator = instance;
-	 	return deployer.deploy(CoreOrchestrator,
+	 	return deployer.deploy(CoreOrchestrator, {gas: 8000000});
+	}).then(function(instance) {
+		coreOrchestrator = instance;
+	 	return deployer.deploy(Orchestrator,
 	 		pcvOrchestrator.address, 
 	 		bondingCurveOrchestrator.address, 
 	 		incentiveOrchestrator.address, 
@@ -50,27 +54,30 @@ module.exports = function(deployer, network, accounts) {
 	 		governorOrchestrator.address,
 			routerOrchestrator.address,
 			stakingOrchestrator.address, 
+			coreOrchestrator.address,
 	 		accounts[0],
 	 		{gas: 8000000}
 	 	);
 	}).then(function(instance) {
-		coreOrchestrator = instance;
-	 	return bondingCurveOrchestrator.transferOwnership(coreOrchestrator.address);
+		orchestrator = instance;
+	 	return bondingCurveOrchestrator.transferOwnership(orchestrator.address);
 	}).then(function(instance) {
-	 	return incentiveOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return incentiveOrchestrator.transferOwnership(orchestrator.address);
 	}).then(function(instance) {
-	 	return idoOrchestrator.transferOwnership(coreOrchestrator.address);
+		return coreOrchestrator.transferOwnership(orchestrator.address);
+   	}).then(function(instance) {
+	 	return idoOrchestrator.transferOwnership(orchestrator.address);
 	}).then(function(instance) {
-	 	return genesisOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return genesisOrchestrator.transferOwnership(orchestrator.address);
 	}).then(function(instance) {
-	 	return governorOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return governorOrchestrator.transferOwnership(orchestrator.address);
 	}).then(function(instance) {
-	 	return controllerOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return controllerOrchestrator.transferOwnership(orchestrator.address);
 	}).then(function(instance) {
-	 	return pcvOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return pcvOrchestrator.transferOwnership(orchestrator.address);
 	}).then(function(instance) {
-	 	return routerOrchestrator.transferOwnership(coreOrchestrator.address);
+	 	return routerOrchestrator.transferOwnership(orchestrator.address);
 	}).then(function(instance) {
-		return stakingOrchestrator.transferOwnership(coreOrchestrator.address);
+		return stakingOrchestrator.transferOwnership(orchestrator.address);
    });
 }

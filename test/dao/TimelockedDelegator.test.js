@@ -34,6 +34,18 @@ describe('TimelockedDelegator', function () {
     it('totalToken', async function() {
       expect(await this.delegator.totalToken()).to.be.bignumber.equal(this.totalTribe);
     });
+
+    it('duration', async function() {
+      expect(await this.delegator.duration()).to.be.bignumber.equal(this.window);
+    });
+
+    it('lockedToken', async function() {
+      expect(await this.delegator.lockedToken()).to.be.equal(this.tribe.address);
+    });
+
+    it('beneficiarty', async function() {
+      expect(await this.delegator.beneficiary()).to.be.equal(beneficiaryAddress1);
+    });
   });
 
   describe('Release', function() {
