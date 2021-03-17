@@ -22,10 +22,7 @@ contract CoreOrchestrator is Ownable {
     // ----------- Uniswap Addresses -----------
     address public constant ETH_USDC_UNI_PAIR =
         address(0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc);
-<<<<<<< HEAD
-=======
 
->>>>>>> a734377 (integration testing setup)
     address public constant ROUTER =
         address(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
 
@@ -153,7 +150,6 @@ contract CoreOrchestrator is Ownable {
         stakingOrchestrator = IStakingOrchestrator(_stakingOrchestrator);
 
         admin = _admin;
-        core.grantGovernor(_admin);
     }
 
     function initCore(address _core) public onlyOwner {
@@ -161,6 +157,7 @@ contract CoreOrchestrator is Ownable {
 
         core.init();
         core.grantGuardian(admin);
+        core.grantGovernor(admin);
 
         tribe = address(core.tribe());
         fei = address(core.fei());
