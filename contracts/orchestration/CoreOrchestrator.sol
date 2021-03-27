@@ -148,7 +148,6 @@ contract CoreOrchestrator is Ownable {
         stakingOrchestrator = IStakingOrchestrator(_stakingOrchestrator);
 
         admin = _admin;
-        core.grantGovernor(_admin);
     }
 
     function initCore(address _core) public onlyOwner {
@@ -156,6 +155,7 @@ contract CoreOrchestrator is Ownable {
 
         core.init();
         core.grantGuardian(admin);
+        core.grantGovernor(admin);
 
         tribe = address(core.tribe());
         fei = address(core.fei());
