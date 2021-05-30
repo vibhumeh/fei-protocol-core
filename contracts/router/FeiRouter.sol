@@ -3,7 +3,7 @@ pragma experimental ABIEncoderV2;
 
 import "@QuickSwap/QuickSwap-periphery/contracts/interfaces/IWETH.sol";
 import "@QuickSwap/quickswap-core/contracts/interfaces/IUniswapV2Pair.sol";
-import "@uniswap/lib/contracts/libraries/TransferHelper.sol";
+import "@QuickSwap/quickswap-core/contracts/staking/StakingRewardsFactory.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../external/UniswapV2Library.sol";
 import "./IFeiRouter.sol"
@@ -129,7 +129,7 @@ contract FeiRouter is IFeiRouter {
 
         IWETH(WETH).withdraw(amountOut);
 
-        TransferHelper.safeTransferETH(to, amountOut);
+        SafeERC20.safeTransfer(0x0000000000000000000000000000000000001010,to, amountOut);
         return amountOut;
     }
 
